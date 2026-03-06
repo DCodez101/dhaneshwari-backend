@@ -1,6 +1,4 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import hero from "../assets/Dhaneshwari Photoshoot/About_us_hero.jpg";
+import hero from "../assets/Dhaneshwari Photoshoot/20250601_122955.jpg";
 const About = () => {
   const commitments = [
     "Immaculate Clean Accommodations",
@@ -88,13 +86,9 @@ const About = () => {
     { value: "4.8", label: "Guest Rating" },
   ];
 
-  // Image path fix - use correct import or public folder
-  const heroImage = "C:\Users\Lenovo\Dhaneshwari\frontend\src\assets\Dhaneshwari Photoshoot\About_us_hero.jpg"; // Public folder se
-
   return (
     <>
-      <Navbar />
-      <div className="bg-[#fcf7ea] min-h-screen">
+      <div className="min-h-screen">
         {/* Hero Section */}
         <section className="relative h-[600px] overflow-hidden">
           <div className="absolute inset-0">
@@ -149,7 +143,7 @@ const About = () => {
               {missionVision.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-[#fcf7ea] p-10 rounded-2xl shadow-lg border-t-4 border-yellow-400 hover:shadow-xl transition-shadow bg-white"
+                  className="p-10 rounded-2xl shadow-lg border-t-4 border-yellow-400 hover:shadow-xl transition-shadow bg-white"
                 >
                   <h3 className="text-2xl font-bold text-gray-800 mb-4">
                     {item.title}
@@ -197,7 +191,7 @@ const About = () => {
               {coreValues.map((value, index) => (
                 <div
                   key={index}
-                  className="bg-[#fcf7ea] p-8 rounded-xl shadow-md bg-white hover:shadow-lg transition-all hover:-translate-y-1"
+                  className="p-8 rounded-xl shadow-md bg-white hover:shadow-lg transition-all hover:-translate-y-1"
                 >
                   <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">
                     {value.title}
@@ -267,7 +261,7 @@ const About = () => {
                 <div className="space-y-6">
                   {locationData.map((item, index) => (
                     <div key={index} className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-[#fcf7ea] rounded-xl flex items-center justify-center text-2xl">
+                      <div className="w-12 h-12 bg-[#f9f6f0] rounded-xl flex items-center justify-center text-2xl">
                         {item.icon}
                       </div>
                       <div>
