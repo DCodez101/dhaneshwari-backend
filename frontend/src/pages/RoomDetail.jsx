@@ -1,0 +1,60 @@
+import { Link, useParams } from "react-router-dom";
+import { rooms } from "../data/siteData";
+import NotFound from "./NotFound";
+
+function RoomDetail() {
+  const { roomId } = useParams();
+  const room = rooms.find((r) => r.id === roomId);
+
+  if (!room) return <NotFound />;
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-14">
+      <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+          <img
+            src={room.img}
+            alt={room.title}
+            className="h-[420px] w-full object-cover"
+          />
+        </div>
+
+        <div>
+          <h1 className="text-4xl font-semibold">{room.title}</h1>
+          <p className="mt-3 text-gray-600">{room.desc}</p>
+
+          <div className="mt-5 inline-flex rounded-full bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700">
+            From {room.priceFrom} / night
+          </div>
+
+          <div className="mt-8 rounded-2xl bg-white p-8 shadow-md">
+            <h2 className="text-xl font-semibold">Included amenities</h2>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {room.amenities.map((a) => (
+                <li key={a} className="flex items-center gap-2 text-gray-700">
+                  <span className="text-orange-500">✓</span>
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+            <button className="mt-8 w-full rounded-md bg-orange-500 px-5 py-3 text-sm font-medium text-white shadow hover:bg-orange-600">
+              Book this room
+            </button>
+          </div>
+
+          <div className="mt-8">
+            <Link
+              to="/rooms"
+              className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-800 shadow-sm hover:border-gray-400"
+            >
+              <span aria-hidden="true">←</span> Back to Rooms
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default RoomDetail;
+
