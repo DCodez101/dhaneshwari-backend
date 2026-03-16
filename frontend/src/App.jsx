@@ -7,6 +7,7 @@ import GalleryPage from "./pages/GalleryPage";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import RoomDetail from "./pages/RoomDetail";
+import ContactUs from "./pages/ContactUs";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="blog" element={<Blog />} />
         <Route path="blog/:slug" element={<BlogPost />} />
         <Route path="about" element={<AboutUs />} />
+        <Route path="contact" element={<ContactUs />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

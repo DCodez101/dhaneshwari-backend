@@ -13,6 +13,7 @@ const navItems = [
   { name: "Gallery", path: "/gallery" },
   { name: "Blog", path: "/blog" },
   { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" },
 ];
 
 function Navbar() {
