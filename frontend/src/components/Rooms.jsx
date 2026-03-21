@@ -1,26 +1,33 @@
+import { useNavigate } from "react-router-dom";
 import room1 from "../assets/Dhaneshwari Photoshoot/roomewithBlancket.jpeg";
 import room2 from "../assets/Dhaneshwari Photoshoot/roomwithBalloon.jpg";
 import room3 from "../assets/Dhaneshwari Photoshoot/astheticRoom.jpeg";
+import { buildQuickPaymentState } from "../utils/quickPaymentState";
 
 const rooms = [
   {
     title: "Deluxe Room",
     desc: "Elegant interiors with modern comfort.",
     img: room1,
+    price: 3499,
   },
   {
     title: "Premium Room",
     desc: "Luxury stay experience for couples & families.",
     img: room2,
+    price: 4499,
   },
   {
     title: "Family Suite",
     desc: "Spacious comfort with premium amenities.",
     img: room3,
+    price: 6999,
   },
 ];
 
 function Rooms() {
+  const navigate = useNavigate();
+
   return (
     <section className="w-full  pt-10 px-4 sm:px-6 lg:px-10">
       <div className="w-full py-10 sm:py-12 lg:py-14 bg-[#e4dcce] rounded-2xl">
@@ -50,7 +57,19 @@ function Rooms() {
 
                 <p className="text-sm text-gray-600">{room.desc}</p>
 
-                <button className="mt-4 sm:mt-6 w-max rounded-md bg-orange-500 px-5 py-2 text-sm font-medium text-white shadow hover:bg-orange-600 transition-colors">
+                <button
+                  type="button"
+                  onClick={() =>
+                    navigate("/payment", {
+                      state: buildQuickPaymentState({
+                        name: room.title,
+                        image: room.img,
+                        pricePerNight: room.price,
+                      }),
+                    })
+                  }
+                  className="mt-4 sm:mt-6 w-max rounded-md bg-orange-500 px-5 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-orange-600"
+                >
                   Book
                 </button>
               </div>

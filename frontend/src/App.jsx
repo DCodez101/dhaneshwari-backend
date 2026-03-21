@@ -8,6 +8,8 @@ import FamousAttractions from "./pages/FamousAttractions";
 import BlogPost from "./pages/BlogPost";
 import RoomDetail from "./pages/RoomDetail";
 import ContactUs from "./pages/ContactUs";
+import Booking from "./pages/Booking";
+import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
         <Route path="blog/:slug" element={<BlogPost />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="contact" element={<ContactUs />} />
+        <Route path="booking" element={<Booking />} />
+        <Route path="payment" element={<Payment />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
