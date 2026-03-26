@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
-const Room = require('../models/Room'); // add this import
+const Room = require('../models/Room');
 
 // Check room availability
 router.post('/check-availability', async (req, res) => {
@@ -47,7 +47,15 @@ router.post('/', async (req, res) => {
 // Get all bookings (admin)
 router.get('/', async (req, res) => {
   try {
-    const bookings = await Booking.find().populate('room');
+    const { status, guest, checkIn, checkOut } = req.query;
+    const filter = {};
+
+    if (status) filter.status = status;
+    if (guest) filter.guestName = { $regex: guest, $options: 'i' };
+    if (checkIn) filter.checkIn = { $gte: new Date(checkIn) };
+    if (checkOut) filter.checkOut = { $lte: new Date(checkOut) };
+
+    const bookings = await Booking.find(filter).populate('room');
     res.json(bookings);
   } catch (err) {
     res.status(500).json({ error: err.message });
