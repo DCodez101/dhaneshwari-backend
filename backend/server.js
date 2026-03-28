@@ -21,6 +21,7 @@ app.use('/api/amenities', require('./routes/amenities'));
 app.use('/api/blogs', require('./routes/blogs'));
 app.use('/api/promotions', require('./routes/promotions'));
 app.use('/uploads', express.static('uploads'));
+app.use('/sitemap.xml', require('./routes/sitemap'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
