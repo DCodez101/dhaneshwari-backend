@@ -1,27 +1,31 @@
 # Dhaneshwari Hotel — Backend API
-
 REST API backend for Dhaneshwari Hotel, Varanasi. Built with Node.js, Express, and MongoDB.
 
 ## Tech Stack
 - Node.js + Express
 - MongoDB + Mongoose
 - JWT Authentication
+- Passport.js (Google OAuth 2.0)
 - Multer (image uploads)
 - bcryptjs
+- Nodemailer
 - dotenv
 
 ## Features
 - Room management with inventory tracking
 - Booking system with auto inventory reduction
 - Admin authentication with JWT
-- User authentication (signup/login)
+- User authentication (signup/login/forgot/reset password)
+- Google OAuth 2.0 login
+- Dynamic pricing with GST breakdown
+- Promotions & discounts (flat + percentage) with stacking
+- Date-wise & extra adult pricing
+- Reservation filters (date/status/guest)
 - Contact form API
 - Slider & testimonials management
 - Amenities management
 - Blog module with full SEO fields
-- Date-wise & extra adult pricing
-- Promotions & discounts (flat + percentage)
-- Reservation filters (date/status/guest)
+- Auto-generated sitemap
 - Image upload support
 
 ## Room Inventory
@@ -33,11 +37,24 @@ REST API backend for Dhaneshwari Hotel, Varanasi. Built with Node.js, Express, a
 
 Extra adult charge: ₹500/adult (applies after base occupancy)
 
+## Pricing Breakdown
+The `calculate-price` endpoint returns a full breakdown:
+- Base price per night × nights
+- Extra adult price × nights
+- Subtotal
+- Discount (flat or percentage)
+- GST @ 5%
+- Final amount
+
 ## API Endpoints
 
 ### Auth (Users)
 - `POST /api/auth/signup` — Register new user
 - `POST /api/auth/login` — Login (returns JWT)
+- `POST /api/auth/forgot-password` — Send password reset email
+- `POST /api/auth/reset-password/:token` — Reset password using token
+- `GET /api/auth/google` — Initiate Google OAuth login
+- `GET /api/auth/google/callback` — Google OAuth callback (returns JWT via redirect)
 
 ### Admin
 - `POST /api/admin/login` — Admin login (returns JWT)
@@ -48,7 +65,7 @@ Extra adult charge: ₹500/adult (applies after base occupancy)
 - `POST /api/rooms` — Add a room
 - `PUT /api/rooms/:id` — Update room
 - `DELETE /api/rooms/:id` — Delete a room
-- `POST /api/rooms/:id/calculate-price` — Calculate price (dates + adults)
+- `POST /api/rooms/:id/calculate-price` — Calculate price with full GST breakdown
 
 ### Bookings
 - `GET /api/bookings` — Get all bookings (filters: status, guest, checkIn, checkOut)
@@ -93,6 +110,9 @@ Extra adult charge: ₹500/adult (applies after base occupancy)
 - `POST /api/slider` — Add slider image
 - `DELETE /api/slider/:id` — Delete slider image
 
+### Sitemap
+- `GET /sitemap.xml` — Auto-generated sitemap (static pages + published blogs)
+
 ## Blog SEO Fields
 Each blog post supports: `metaTitle`, `metaDescription`, `metaKeywords`, `slug`, `ogTitle`, `ogDescription`, `ogImage`, `h1`, `h2`, `h3`, `altText`, `isPublished`
 
@@ -110,6 +130,10 @@ Each blog post supports: `metaTitle`, `metaDescription`, `metaKeywords`, `slug`,
 PORT=5000
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
+EMAIL_USER=your_gmail
+EMAIL_PASS=your_gmail_app_password
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 4. `npm run dev`
 
