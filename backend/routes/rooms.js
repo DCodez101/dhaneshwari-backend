@@ -53,9 +53,11 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Calculate price with full breakdown
 router.post('/:id/calculate-price', async (req, res) => {
   try {
-    const { checkIn, checkOut, adults } = req.body;
+    const { checkIn, checkOut, adults, discountPercent } = req.body;
     const room = await Room.findById(req.params.id);
     if (!room) return res.status(404).json({ error: 'Room not found' });
 
@@ -63,21 +65,47 @@ router.post('/:id/calculate-price', async (req, res) => {
     const end = new Date(checkOut);
     const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
 
-    // Check date-wise pricing
+    // Date-wise pricing check
     const dateOverride = room.datePricing.find(dp =>
       start >= new Date(dp.startDate) && end <= new Date(dp.endDate)
     );
-    const basePrice = dateOverride ? dateOverride.price : room.pricePerNight;
+    const basePricePerNight = dateOverride ? dateOverride.price : room.pricePerNight;
 
-    // Extra adult pricing
+    // Extra adults
     const extraAdults = Math.max(0, (adults || room.baseOccupancy) - room.baseOccupancy);
     const maxExtra = room.maxOccupancy - room.baseOccupancy;
     if (extraAdults > maxExtra) {
       return res.status(400).json({ error: `Max occupancy is ${room.maxOccupancy} adults` });
     }
 
-    const total = (basePrice + (extraAdults * room.extraAdultPrice)) * nights;
-    res.json({ nights, basePrice, extraAdults, extraAdultPrice: room.extraAdultPrice, total });
+    // Breakdown
+    const basePriceTotal = basePricePerNight * nights;
+    const extraAdultTotal = extraAdults * room.extraAdultPrice * nights;
+    const subtotal = basePriceTotal + extraAdultTotal;
+
+    // Discount
+    const discount = discountPercent ? Math.round((discountPercent / 100) * subtotal) : 0;
+    const afterDiscount = subtotal - discount;
+
+    // GST 5%
+    const gst = Math.round(0.05 * afterDiscount);
+    const finalAmount = afterDiscount + gst;
+
+    res.json({
+      nights,
+      basePricePerNight,
+      basePriceTotal,
+      extraAdults,
+      extraAdultPricePerNight: room.extraAdultPrice,
+      extraAdultTotal,
+      subtotal,
+      discountPercent: discountPercent || 0,
+      discount,
+      afterDiscount,
+      gstPercent: 5,
+      gst,
+      finalAmount
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
